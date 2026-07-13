@@ -7,3 +7,8 @@ asideMenuToggle.addEventListener('click', () => {
     asideMenu.classList.toggle('open');
     content.classList.toggle('menu-open');
 });
+
+const themeToggle = document.querySelector('#chk');
+themeToggle.addEventListener('change', () => {
+    document.body.classList.toggle('dark');
+});
