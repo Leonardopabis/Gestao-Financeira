@@ -1,0 +1,18 @@
+:root {
+    --background-primary-color: #ffffff;
+    --background-secondary-color: #f3f4f6
+}
+
+body {
+    background-color: var(--background-primary-color);
+}
+
+button {
+    cursor: pointer
+}
+
+input {
+    outline: none;
+    border: none;
+    background: transparent;
+}

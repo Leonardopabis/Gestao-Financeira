@@ -1,0 +1,93 @@
+.top-header {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    gap: 16px;
+}
+
+.header-image-container {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #dbdbdb;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header-button {
+    width: 20px;
+    height: 20px;
+    border: none;
+}
+.menu-button{
+    background: url(../img/menu-burguer-2.png) no-repeat center/cover;
+}
+
+.header-search-bar {
+    width: 50%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    left: 35%;
+    transform: translateX(-50%);
+    gap: 10px;
+    padding: 5px;
+    border: 1px solid #dbdbdb;
+    border-radius: 10px;
+    background-color: var(--background-secondary-color);
+}
+
+.header-search-bar button {
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    background: url(../img/lupa.png) no-repeat center/cover;
+    border: none;
+}
+
+.header-search-bar input {
+    width: 80%;
+    height: 100%;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+}
+
+.notification-button {
+    width: 25px;
+    background: url(../img/notificacao.png) no-repeat center/cover;
+}
+
+.email-button {
+    width: 30px;
+    background: url(../img/email.png) no-repeat center/cover;
+}
+
+.user-profile img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+}
+
+.user-profile {
+    display: flex;
+    gap: 10px;
+}
+
+.user-information {
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.user-v {
+    margin-top: 15px;
+}
