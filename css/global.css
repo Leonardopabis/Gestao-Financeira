@@ -1,10 +1,18 @@
 :root {
     --background-primary-color: #ffffff;
-    --background-secondary-color: #f3f4f6
+    --background-secondary-color: #f3f4f6;
+    --background-terciary-color: #dbdbdb;
+}
+
+header {
+    background-color: var(--background-primary-color);
 }
 
 body {
-    background-color: var(--background-primary-color);
+    background-color: var(--background-terciary-color);
+    overflow-x: hidden;
+    width: 100%;
+    min-height: 100vh;
 }
 
 button {
@@ -15,4 +23,14 @@ input {
     outline: none;
     border: none;
     background: transparent;
+}
+
+.content {
+    min-height: 100vh;
+    margin-left: 0px;
+    transition: margin-left 0.3s ease-in-out;
+}
+
+.content.menu-open {
+    margin-left: 250px;
 }

@@ -1,10 +1,15 @@
 .top-header {
+    position: relative;
     height: 60px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 10px;
     gap: 16px;
+}
+
+.top-header-push {
+    margin-left: auto;
 }
 
 .header-image-container {
@@ -29,13 +34,17 @@
 .header-search-bar {
     width: 50%;
     height: 40px;
+
     display: flex;
     align-items: center;
+
     position: absolute;
     left: 35%;
     transform: translateX(-50%);
+
     gap: 10px;
     padding: 5px;
+    
     border: 1px solid #dbdbdb;
     border-radius: 10px;
     background-color: var(--background-secondary-color);
