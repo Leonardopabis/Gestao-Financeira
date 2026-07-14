@@ -1,0 +1,50 @@
+.finances-summary{ 
+    display: flex;
+    margin: 0 30px;
+    margin-top: 10px;
+    gap: 20px;
+}
+
+.summary-container {
+    width: 280px;
+    height: 120px;
+    border: 2px solid var(--background-terciary-color);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.summary-container img {
+    width: 100px;
+    height: 200px;
+    object-fit: contain;
+}
+
+.summary-container .arrow-down {
+    width: 100px;
+    height: 90px;
+}
+
+.summary-text {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.summary-text p {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.summary-text .green {
+    color: green;
+}
+
+.summary-text .blue {
+    color: blue;
+}
+
+.summary-text .red {
+    color: red;
+}
