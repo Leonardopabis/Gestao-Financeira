@@ -1,0 +1,20 @@
+
+
+.introduction {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 30px 0 30px;
+}
+.intro hr {
+    margin: 5px 0;
+}
+
+.date-filter {
+    width: 200px;
+    height: 35px;
+    border: 2px solid var(--background-terciary-color);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    align-self: center;
+}
