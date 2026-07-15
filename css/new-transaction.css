@@ -3,15 +3,9 @@ input[list]::-webkit-calendar-picker-indicator {
 }
 
 .new-transaction-container {
-  margin: 20px 30px;
-  max-width: 100%;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 20px;
-
-  border: 2px solid var(--background-terciary-color);
-  border-radius: 10px;
 }
 
 .new-transaction-intro {
@@ -71,5 +65,5 @@ input[list]::-webkit-calendar-picker-indicator {
   width: 150px;
   height: 40px; 
   padding-left: 0;
-  background-color: rgb(198, 255, 198);
+  background-color: var(--button-primary-color);
 }

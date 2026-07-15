@@ -1,0 +1,7 @@
+.last-transactions-intro {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--background-terciary-color);
+}
