@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="./css/style.css">
     <script src="https://kit.fontawesome.com/97fcd51aa8.js" crossorigin="anonymous"></script>
 </head>
+
 <body>
     <aside class="aside-menu">
         <div class="header-aside">
@@ -24,31 +26,31 @@
                         </li>
                     </a>
                     <a href="">
-                            <li class="aside-menu-item">
+                        <li class="aside-menu-item">
                             <img src="" alt="">
                             <span>Transações</span>
                         </li>
                     </a>
                     <a href="">
-                            <li class="aside-menu-item">
+                        <li class="aside-menu-item">
                             <img src="" alt="">
                             <span>Categorias</span>
                         </li>
                     </a>
                     <a href="">
-                            <li class="aside-menu-item">
+                        <li class="aside-menu-item">
                             <img src="" alt="">
                             <span>Relatórios</span>
                         </li>
                     </a>
                     <a href="">
-                            <li class="aside-menu-item">
+                        <li class="aside-menu-item">
                             <img src="" alt="">
                             <span>Metas</span>
                         </li>
                     </a>
                     <a href="">
-                            <li class="aside-menu-item">
+                        <li class="aside-menu-item">
                             <img src="" alt="">
                             <span>Configurações</span>
                         </li>
@@ -75,31 +77,31 @@
             <div class="header-image-container">
                 <button class="header-button menu-button"></button>
             </div>
-            
-                <div class="header-search-bar header-center">
-                    <button></button>
-                    <input type="text" placeholder="Buscar transações, categorias...">
+
+            <div class="header-search-bar header-center">
+                <button></button>
+                <input type="text" placeholder="Buscar transações, categorias...">
+            </div>
+
+            <div class="header-right">
+                <div class="header-image-container">
+                    <button class="header-button notification-button"></button>
                 </div>
 
-                <div class="header-right">
-                        <div class="header-image-container">
-                            <button class="header-button notification-button"></button>
-                        </div>
-            
-                        <div class="header-image-container">
-                            <button class="header-button email-button"></button>
-                        </div>
-            
-                        <div class="user-profile">
-                            <img src="./img/pessoa.png" alt="imagem de uma pessoa">
-            
-                            <div class="user-information">
-                                <p><strong>João Silva</strong></p>
-                                <p>joao.silva@email.com</p>
-                            </div>
-                            <span class="user-v">v</span>
-                    </div>    
+                <div class="header-image-container">
+                    <button class="header-button email-button"></button>
                 </div>
+
+                <div class="user-profile">
+                    <img src="./img/pessoa.png" alt="imagem de uma pessoa">
+
+                    <div class="user-information">
+                        <p><strong>João Silva</strong></p>
+                        <p>joao.silva@email.com</p>
+                    </div>
+                    <span class="user-v">v</span>
+                </div>
+            </div>
 
         </header>
         <main>
@@ -176,11 +178,11 @@
                             <label>
                                 <input type="radio" name="type" value="receita">
                                 Receita
-                            </label>   
+                            </label>
                             <label>
                                 <input type="radio" name="type" value="despesa">
                                 Despesa
-                            </label> 
+                            </label>
                         </div>
                     </div>
                     <div class="form-field">
@@ -237,21 +239,117 @@
             </section>
 
             <section class="last-transactions-container container">
-                <div class="last-transactions-intro">
+                <div class="last-transactions-header">
                     <h4>Últimas Transações</h4>
-                    <a href="#">Ver Todas</a>
-                </div>
-                <div class="last-transactions-list">
-                    <div class="last-transactions-list-header">
-
-                    </div>
-                    <ul>
-                        <li>
-                            <img src="" alt="">
-                        </li>
-                    </ul>
+                    <a href="#">Ver todas</a>
                 </div>
 
+                <div class="transactions-table-wrapper">
+                    <table class="transactions-table">
+                        <thead>
+                            <tr>
+                                <th>Descrição</th>
+                                <th>Categoria</th>
+                                <th>Tipo</th>
+                                <th>Valor</th>
+                                <th>Data</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="transaction-description">
+                                        <img src="./img/filter-cifrao.png" alt="Ícone de salário">
+                                        <span>Salário</span>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <span class="category-badge">
+                                        Trabalho
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="transaction-type income">
+                                        Receita
+                                    </span>
+                                </td>
+
+                                <td class="transaction-value income-value">
+                                    R$ 5.000,00
+                                </td>
+
+                                <td>
+                                    <time datetime="2026-07-01">
+                                        01/07/2026
+                                    </time>
+                                </td>
+
+                                <td>
+                                    <div class="transaction-actions">
+                                        <button type="button" class="action-button edit-button"
+                                            aria-label="Editar transação">
+                                            <i class="fa-solid fa-pen"></i>
+                                        </button>
+
+                                        <button type="button" class="action-button delete-button"
+                                            aria-label="Excluir transação">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div class="transaction-description">
+                                        <img src="./img/filter-cifrao.png" alt="Ícone de despesa">
+                                        <span>Supermercado</span>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <span class="category-badge">
+                                        Alimentação
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="transaction-type expense">
+                                        Despesa
+                                    </span>
+                                </td>
+
+                                <td class="transaction-value expense-value">
+                                    - R$ 320,00
+                                </td>
+
+                                <td>
+                                    <time datetime="2026-07-10">
+                                        10/07/2026
+                                    </time>
+                                </td>
+
+                                <td>
+                                    <div class="transaction-actions">
+                                        <button type="button" class="action-button edit-button"
+                                            aria-label="Editar transação">
+                                            <i class="fa-solid fa-pen"></i>
+                                        </button>
+
+                                        <button type="button" class="action-button delete-button"
+                                            aria-label="Excluir transação">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </section>
         </main>
 
@@ -260,8 +358,9 @@
         </aside>
     </div>
 
-    
+
     <script src="./js/aside.js"></script>
     <script src="./js/filter.js"></script>
 </body>
+
 </html>
