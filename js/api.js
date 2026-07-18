@@ -1,5 +1,5 @@
 // Criar estrutura html da transaçãox
-const criarItemHtml = (descricao, categoria, tipo, valor, data, receita) => {
+const criarItemHtml = (descricao, categoria, tipo, valor, data, receita, id) => {
     const classeTipo = receita ? 'income' : 'expense'
     const classeValor = receita ? 'income-value' : 'expense-value'
     const sinalValor = receita ? '' : '- '
@@ -7,10 +7,19 @@ const criarItemHtml = (descricao, categoria, tipo, valor, data, receita) => {
     let imagem = ''
     let descricaoImagem = ''
     let categoriaFormatada = categoria.toLowerCase()
-    if (categoria.toLowerCase() === 'trabalho') {
+    if (categoriaFormatada === 'trabalho') {
         imagem = './img/filter-cifrao.png'
-        descricaoImagem = 'ícone de cifrão referente à receita'
-    } else if (cate)
+        descricaoImagem = 'ícone de cifrão para a categoria trabalho'
+    } else if (categoriaFormatada === 'saúde') {
+        imagem = './img/categoria-saude.png'
+        descricaoImagem = 'ícode de um halter para a categoria saude'
+    } else if (categoriaFormatada === 'transporte') {
+        imagem = './img/categoria-transporte.png'
+        descricaoImagem = 'ícode de um carro para a categoria transporte'
+    } else if (categoriaFormatada === 'alimentação') {
+        imagem = './img/categoria-alimentacao.png'
+        descricaoImagem = 'ícone de um carrinho de compras para a categoria alimentação'
+    }
     return `
                             <tr>
                                 <td>
@@ -49,8 +58,7 @@ const criarItemHtml = (descricao, categoria, tipo, valor, data, receita) => {
                                             <i class="fa-solid fa-pen"></i>
                                         </button>
 
-                                        <button type="button" class="action-button delete-button"
-                                            aria-label="Excluir transação">
+                                        <button type="button" class="action-button delete-button" row-id="${id}" aria-label="Excluir transação">
                                             <i class="fa-solid fa-trash"></i>
                                         </button>
                                     </div>
@@ -82,11 +90,22 @@ async function carregarTransacoes() {
                 item.tipo = 'Despesa'
             }
 
-            const formatoBrasileiro = new Intl.NumberFormat('pt-br', { minimumFractionDigits: 2, maximumFractionDigits: 2})
+            const formatoBrasileiro = new Intl.NumberFormat('pt-br', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
             const valorFormatado = formatoBrasileiro.format(item.valor)
 
-            const novaTransacao = criarItemHtml(item.descricao, item.categoria, item.tipo, valorFormatado, item.data, isReceita)
+            const novaTransacao = criarItemHtml(item.descricao, item.categoria, item.tipo, valorFormatado, item.data, isReceita, item.id)
             listaDeTransacoes.insertAdjacentHTML('afterbegin', novaTransacao)
+
+            // funcao do botao de delete
+            let deleteButtons = document.querySelectorAll(".delete-button")
+
+            deleteButtons.forEach((button) => {
+                button.addEventListener('click', () => {
+                    console.log('a')
+                    const id = button.getAttribute('row-id')
+                    console.log(id)
+                })
+            })
         });
     } catch (erro) {
         console.error('Erro ao buscar dados', erro)
@@ -106,15 +125,15 @@ const formularioNovaTransacao = document.querySelector('#new-transaction-form')
 
 formularioNovaTransacao.addEventListener('submit', async (event) => {
     event.preventDefault()
-    
+
     const descricaoHtml = document.querySelector('#description').value
     const valorHtml = document.querySelector('#value').value
     const categoriaHtml = document.querySelector('#categories').value
     const tipoSelecionado = document.querySelector('input[name="type"]:checked')
     const dataHtml = document.querySelector('#transaction-date').value
-    
+
     const valor = Number(valorHtml.replace(/\./g, '').replace(',', '.'))
-    
+
     if (!tipoSelecionado) {
         alert('Selecione Receita ou Despesa')
         return
@@ -122,7 +141,7 @@ formularioNovaTransacao.addEventListener('submit', async (event) => {
 
     const tipoHtml = tipoSelecionado.value;
 
-    if (Number.isNaN(valor)){
+    if (Number.isNaN(valor)) {
         alert('Digite um valor válido')
         return
     }
@@ -154,3 +173,9 @@ formularioNovaTransacao.addEventListener('submit', async (event) => {
     }
 
 })
+
+async function deletarTransacao(id) {
+
+}
+
+
