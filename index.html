@@ -263,16 +263,18 @@
                     </table>
                 </div>
             </section>
-            //html para os popups de deletar e editar
-            <dialog id="delete-modal">
-                
-                <button id="fechar-modal"></button>
-            </dialog>
-            <section class="popups-container">
-                <div class="delete-popup">
-
-                </div>
-            </section>
+                <dialog class="delete-modal">
+                    <div>
+                        <h5>Deseja deletar essa transação?</h5>
+                    </div>
+                    <div>
+                        <h6 class="modal-text"></h6>
+                    </div>
+                    <div>
+                        <button class="fechar-modal">Não</button>
+                        <button class="confirmar-modal">Sim</button>
+                    </div>
+                </dialog>
         </main>
 
         <aside class="right-aside">
@@ -284,6 +286,7 @@
     <script src="./js/aside.js"></script>
     <script src="./js/filter.js"></script>
     <script src="./js/api.js"></script>
+    <script src="./js/popup.js"></script>
 </body>
 
 </html>
