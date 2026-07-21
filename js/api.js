@@ -100,19 +100,29 @@ async function carregarTransacoes() {
         // funcao do botao de delete
         const deleteButtons = document.querySelectorAll(".delete-button")
         const modal = document.querySelector('.delete-modal')
+        const modalContainer = document.querySelector('.delete-modal-container')
+        const modalText = document.querySelector('.modal-text')
+
+        modal.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape'){
+                event.preventDefault()
+            }
+        })
+
         deleteButtons.forEach((button) => {
             button.addEventListener('click', async () => {
                 const id = button.getAttribute('row-id')
-                
                 console.log(id)
+                modalContainer.classList.remove('delete-modal-container')
                 modal.showModal()
                 document.body.classList.add('modal-aberto')
-                // await deletarTransacao(id)
                 const closeModal = document.querySelector('.fechar-modal')
                 closeModal.addEventListener('click', () => {
-                    modal.closeModal()
+                    modal.close()
                     document.body.classList.remove('modal-aberto')
+                    modalContainer.classList.add('delete-modal-container')
                 })
+                // await deletarTransacao(id)
             })
         })
     } catch (erro) {
