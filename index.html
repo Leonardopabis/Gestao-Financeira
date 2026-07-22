@@ -153,7 +153,8 @@
                 <form action="#" id="new-transaction-form" class="new-transaction-form">
                     <div class="form-field">
                         <label for="description">Descrição</label>
-                        <input type="text" placeholder="Ex: Salário" id="description" list="transactions-list" name="descricao-input">
+                        <input type="text" placeholder="Ex: Salário" id="description" list="transactions-list"
+                            name="descricao-input">
                         <datalist id="transactions-list">
                             <option value="Salário">Salário</option>
                         </datalist>
@@ -258,25 +259,73 @@
                         </thead>
 
                         <tbody class="transaction-list-body">
-                    
+
                         </tbody>
                     </table>
                 </div>
             </section>
-            <section class="delete-modal-container">
-
-                <dialog class="delete-modal">
-                    <div class="modal-text">
-                        <h5>Deseja deletar<br>essa transação?</h5>
-                    </div>
-                    <!-- <div>
-                        <h6 class="modal-text"></h6>
-                    </div> -->
-                    <div class="modal-button-container">
-                        <button class="fechar-modal modal-button">Não</button>
-                        <button class="confirmar-modal modal-button">Sim</button>
-                    </div>
-                </dialog>
+            <section class="modal-container">
+                <div class="delete-modal-container">
+                    <dialog class="delete-modal">
+                        <div class="modal-text">
+                            <h5>Deseja deletar<br>essa transação?</h5>
+                        </div>
+                        <!-- <div>
+                            <h6 class="modal-text"></h6>
+                        </div> -->
+                        <div class="modal-button-container">
+                            <button class="fechar-delete-modal modal-button">Não</button>
+                            <button class="confirmar-delete-modal modal-button">Sim</button>
+                        </div>
+                    </dialog>
+                </div>
+                <div class="edit-modal-container">
+                    <dialog class="edit-modal">
+                        <form action="#" id="edit-transaction-form" class="edit-transaction-form">
+                            <div class="form-field">
+                                <label for="edit-description">Descrição</label>
+                                <input type="text" placeholder="Ex: Salário" id="edit-description" name="descricao-input">
+                            </div>
+                            <div class="form-field">
+                                <label for="edit-value">Valor (R$)</label>
+                                <input type="text" placeholder="99,99" id="edit-value" name="edit-value-input">
+                            </div>
+                            <div class="form-field">
+                                <label for="categories">Categorias</label>
+                                <select name="categories" id="edit-categories">
+                                    <option value="" selected disabled hidden>Selecione</option>
+                                    <option value="Saúde">Saúde</option>
+                                    <option value="Trabalho">Trabalho</option>
+                                    <option value="Transporte">Transporte</option>
+                                    <option value="Alimentação">Alimentação</option>
+                                </select>
+                            </div>
+                            <div class="form-field radio-field">
+                                <p>Tipo</p>
+                                <div class="radio-group">
+                                    <label>
+                                        <input type="radio" name="type" value="edit-receita">
+                                        Receita
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="type" value="edit-despesa">
+                                        Despesa
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-field">
+                                <label for="edit-transaction-date">Data</label>
+                                <input type="date" name="data-input" id="edit-transaction-date">
+                            </div>
+                        </form>
+                        <div class="edit-buttons">
+                            <button class="fechar-edit-modal modal-button">Cancelar</button>
+                            <button type="submit" form="edit-transaction-form" class="confirm-edit-button modal-button">
+                                <p>Editar Transação</p>
+                            </button>
+                        </div>
+                    </dialog>
+                </div>
             </section>
         </main>
 

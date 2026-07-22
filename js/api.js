@@ -96,7 +96,7 @@ async function carregarTransacoes() {
             listaDeTransacoes.insertAdjacentHTML('afterbegin', novaTransacao)
 
         });
-        configurarBotoesDelete()
+        await configurarBotoesDeleteEEdit()
     } catch (erro) {
         console.error('Erro ao buscar dados', erro)
     }
@@ -112,7 +112,7 @@ modal.addEventListener('cancel', (event) => {
 
 let id = null
 
-function configurarBotoesDelete() {
+async function configurarBotoesDeleteEEdit() {
     const deleteButtons = document.querySelectorAll('.delete-button')
     const editButtons = document.querySelectorAll('.edit-button')
 
@@ -130,9 +130,10 @@ function configurarBotoesDelete() {
         button.addEventListener('click', () => {
             id = button.getAttribute('row-id')
             console.log(id)
-            modal.showModal()
+            getTransactionById(id)
+            editModal.showModal()
             document.body.classList.add('modal-aberto')
-            modalContainer.classList.remove('delete-modal-container')
+            editModalContainer.classList.remove('edit-modal-container')
         })
     })
 }
@@ -143,10 +144,19 @@ function fecharModalDelete() {
     modalContainer.classList.add('delete-modal-container')
 }
 
-const closeModal = document.querySelector('.fechar-modal')
+function fecharModalEdit() {
+    editModal.close()
+    document.body.classList.remove('modal-aberto')
+    editModalContainer.classList.add('edit-modal-container')
+}
+
+const closeModal = document.querySelector('.fechar-delete-modal')
 closeModal.addEventListener('click', fecharModalDelete)
 
-const confirmModal = document.querySelector('.confirmar-modal')
+const closeEditModal = document.querySelector('.fechar-edit-modal')
+closeEditModal.addEventListener('click', fecharModalEdit)
+
+const confirmModal = document.querySelector('.confirmar-delete-modal')
 confirmModal.addEventListener('click', async () => {
     if (!id) return
     
@@ -154,6 +164,14 @@ confirmModal.addEventListener('click', async () => {
     fecharModalDelete()
     id = null
 })
+
+//modal de edicao
+const editModal = document.querySelector('.edit-modal')
+const editModalContainer = document.querySelector('.edit-modal-container')
+
+
+
+
 
 function formartarData(dataISO) {
     const [ano, mes, dia] = dataISO.split('T')[0].split('-')
@@ -233,5 +251,35 @@ async function deletarTransacaoNoBanco(id) {
     }
     carregarTransacoes()
 }
+
+async function getTransactionById(id) {
+        const resposta = await fetch('http://localhost:3000/api/get-transaction-by-id', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id })
+        })
+        
+        if (!resposta.ok) {
+            throw new Error('Erro ao buscar transação')
+        }
+        const resultado = await resposta.json()
+        console.log('resposta do server: ', resultado)
+        return resultado.resultado
+}
+
+async function carregarEditItem() {
+    const { resultado: {descricao} } = await getTransactionById(11)
+    console.log(descricao)
+}
+carregarEditItem()
+// const {
+//     descricao,
+//     categoria,
+//     tipo,
+//     valor,
+//     data
+// }
 
 carregarTransacoes()

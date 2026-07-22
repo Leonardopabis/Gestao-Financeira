@@ -82,6 +82,28 @@ app.delete('/api/delete-transaction', (req, res) => {
     )
 })
 
+
+app.post('/api/get-transaction-by-id', (req, res) => {
+    const {
+        id
+    } = req.body
+    connection.query(
+        'SELECT * FROM transaction where id = (?)', [id],
+        (err, results) => {
+            if (err) {
+                console.error(err)
+                return res.status(500).json({
+                    erro: 'Erro ao buscar transação'
+                })
+            }
+            return res.json({
+                mensagem: 'Busca por transação feita com sucesso',
+                resultado: results
+            })
+        }
+    )
+})
+
 app.listen(3000, () => {
     console.log('Servidor rodando na porta 3000')
 })
