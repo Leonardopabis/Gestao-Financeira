@@ -53,8 +53,7 @@ const criarItemHtml = (descricao, categoria, tipo, valor, data, receita, id) => 
 
                                 <td>
                                     <div class="transaction-actions">
-                                        <button type="button" class="action-button edit-button"
-                                            aria-label="Editar transação">
+                                        <button type="button" class="action-button edit-button" row-id="${id}" aria-label="Editar transação">
                                             <i class="fa-solid fa-pen"></i>
                                         </button>
 
@@ -115,8 +114,19 @@ let id = null
 
 function configurarBotoesDelete() {
     const deleteButtons = document.querySelectorAll('.delete-button')
+    const editButtons = document.querySelectorAll('.edit-button')
 
     deleteButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+            id = button.getAttribute('row-id')
+            console.log(id)
+            modal.showModal()
+            document.body.classList.add('modal-aberto')
+            modalContainer.classList.remove('delete-modal-container')
+        })
+    })
+
+    editButtons.forEach((button) => {
         button.addEventListener('click', () => {
             id = button.getAttribute('row-id')
             console.log(id)
