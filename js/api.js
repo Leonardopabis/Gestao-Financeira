@@ -66,6 +66,9 @@ const criarItemHtml = (descricao, categoria, tipo, valor, data, receita, id) => 
 `
 }
 
+let totalDeReceitas = 0
+let totalDeDespesas = 0
+
 // Carregar dados do sql na lista
 async function carregarTransacoes() {
     try {
@@ -84,9 +87,11 @@ async function carregarTransacoes() {
             if (item.tipo.toLowerCase() === 'receita') {
                 isReceita = true
                 item.tipo = 'Receita'
+                totalDeReceitas += item.valor
             } else {
                 isReceita = false
                 item.tipo = 'Despesa'
+                totalDeDespesas += item.valor
             }
 
             const formatoBrasileiro = new Intl.NumberFormat('pt-br', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
@@ -228,9 +233,10 @@ formularioNovaTransacao.addEventListener('submit', async (event) => {
     const valorHtml = document.querySelector('#value').value
     const categoriaHtml = document.querySelector('#categories').value
     const tipoSelecionado = document.querySelector('input[name="type"]:checked')
+    
     const dataHtml = document.querySelector('#transaction-date').value
 
-    const valor = Number(valorHtml.replace(/\./g, '').replace(',', '.'))
+    const valor = transformarValorEmValorSql(valorHtml)
 
     if (!tipoSelecionado) {
         alert('Selecione Receita ou Despesa')
@@ -321,6 +327,7 @@ async function editarTransacaoNoBanco(id) {
     const novaDescricao = editTransactionDescricao.value
     const novaCategoria = editTransactionCategoria.value
     const novoValor = editTransactionValor.value
+    const novoValorSql = transformarValorEmValorSql(novoValor)
     const novoTipo = document.querySelector('input[name="edit-type"]:checked').value
     const novaData = editTransactionData.value
 
@@ -328,7 +335,7 @@ async function editarTransacaoNoBanco(id) {
         id,
         novaDescricao,
         novaCategoria,
-        novoValor,
+        novoValorSql,
         novoTipo,
         novaData
     }
@@ -356,4 +363,20 @@ async function editarTransacaoNoBanco(id) {
     carregarTransacoes()
 }
 
-carregarTransacoes()
+function transformarValorEmValorSql(valor) {
+    const valorSql = Number(valor.replace(/\./g, '').replace(',', '.'))
+    return valorSql
+}
+
+async function carregarValoresResumo() {
+    await carregarTransacoes()
+    const saldoAtual = document.querySelector('.saldo-atual')
+    const totalDespesasHtml = document.querySelector('.total-despesas')
+    const totalReceitasHtml = document.querySelector('.total-receitas')
+    saldoAtual.innerHTML = `R$ ${totalDeReceitas - totalDeDespesas}`
+    
+    totalDespesasHtml.innerHTML = `R$ ${totalDeDespesas}`
+    totalReceitasHtml.innerHTML = `R$ ${totalDeReceitas}`
+}
+
+carregarValoresResumo()

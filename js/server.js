@@ -109,18 +109,21 @@ app.put('/api/edit-transaction-by-id', (req, res) => {
         id,
         novaDescricao,
         novaCategoria,
-        novoValor,
+        novoValorSql,
         novoTipo,
         novaData
     } = req.body
 
-    const query = 'update transactions set descricao = (?), categoria = (?), valor = (?), tipo = (?), data = (?) where id = (?)'
+    const query = 'update transaction set descricao = (?), categoria = (?), valor = (?), tipo = (?), data = (?) where id = (?)'
 
-    connection.query(query, [novaDescricao, novaCategoria, novoValor, novoTipo, novaData, id], (err, results) => {
+    connection.query(query, [novaDescricao, novaCategoria, novoValorSql, novoTipo, novaData, id], (err, results) => {
         if (err) { 
             return res.status(500).json({ erro: err.message })
         }
-        
+        if (results.affectedRows === 0) {
+            return res.status(404).json({ mensagem: 'transação não encontrada'})
+        }
+        res.json({ mensagem: 'Transação atualizada com sucesso'})
         
     })
 })
