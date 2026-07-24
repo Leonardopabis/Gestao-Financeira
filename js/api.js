@@ -66,11 +66,15 @@ const criarItemHtml = (descricao, categoria, tipo, valor, data, receita, id) => 
 `
 }
 
-let totalDeReceitas = 0
-let totalDeDespesas = 0
-
 // Carregar dados do sql na lista
 async function carregarTransacoes() {
+    let totalDeReceitas = 0
+    let totalDeDespesas = 0
+    let hoje = new Date().toISOString().split('T')[0]
+    let dataHtmlHoje = document.querySelector('#transaction-date').value = hoje
+    let dataHeader = document.querySelector('#data-header').value = hoje
+
+
     try {
         const resposta = await fetch('http://localhost:3000/api/get-transactions')
 
@@ -99,6 +103,12 @@ async function carregarTransacoes() {
 
             const novaTransacao = criarItemHtml(item.descricao, item.categoria, item.tipo, valorFormatado, item.data, isReceita, item.id)
             listaDeTransacoes.insertAdjacentHTML('afterbegin', novaTransacao)
+
+            let hoje = new Date().toISOString().split('T')[0]
+            let dataHtmlHoje = document.querySelector('#transaction-date').value = hoje
+            let dataHeader = document.querySelector('#data-header').value = hoje
+
+            carregarValoresResumo(totalDeReceitas, totalDeDespesas)
 
         });
         await configurarBotoesDeleteEEdit()
@@ -191,7 +201,7 @@ closeEditModal.addEventListener('click', fecharModalEdit)
 const confirmModal = document.querySelector('.confirmar-delete-modal')
 confirmModal.addEventListener('click', async () => {
     if (!id) return
-    
+
     await deletarTransacaoNoBanco(id)
     fecharModalDelete()
     id = null
@@ -221,8 +231,6 @@ function formartarData(dataISO) {
     return `${dia}/${mes}/${ano}`
 }
 
-
-
 // Criar nova transação
 const formularioNovaTransacao = document.querySelector('#new-transaction-form')
 
@@ -233,8 +241,8 @@ formularioNovaTransacao.addEventListener('submit', async (event) => {
     const valorHtml = document.querySelector('#value').value
     const categoriaHtml = document.querySelector('#categories').value
     const tipoSelecionado = document.querySelector('input[name="type"]:checked')
-    
-    const dataHtml = document.querySelector('#transaction-date').value
+
+    let dataHtml = document.querySelector('#transaction-date').value
 
     const valor = transformarValorEmValorSql(valorHtml)
 
@@ -272,6 +280,9 @@ formularioNovaTransacao.addEventListener('submit', async (event) => {
         carregarTransacoes()
         formularioNovaTransacao.reset()
 
+        const inputsValidados = formularioNovaTransacao.querySelectorAll('valid-form-input')
+        inputsValidados.forEach(input => input.classList.remove('valid-form-input'))
+
     } catch (error) {
         console.log('Erro ao enviar: ', error)
     }
@@ -296,20 +307,20 @@ async function deletarTransacaoNoBanco(id) {
 }
 
 async function getTransactionById(id) {
-        const resposta = await fetch('http://localhost:3000/api/get-transaction-by-id', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ id })
-        })
-        
-        if (!resposta.ok) {
-            throw new Error('Erro ao buscar transação')
-        }
-        const resultado = await resposta.json()
-        console.log('resposta do server: ', resultado)
-        return resultado
+    const resposta = await fetch('http://localhost:3000/api/get-transaction-by-id', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id })
+    })
+
+    if (!resposta.ok) {
+        throw new Error('Erro ao buscar transação')
+    }
+    const resultado = await resposta.json()
+    console.log('resposta do server: ', resultado)
+    return resultado
 }
 //fazer o destructuring
 async function carregarEditItem(id) {
@@ -320,7 +331,7 @@ async function carregarEditItem(id) {
     const tipo = transacao.resultado[0].tipo
     const valor = transacao.resultado[0].valor
     const data = transacao.resultado[0].data
-    return {descricao,categoria,tipo,valor,data}
+    return { descricao, categoria, tipo, valor, data }
 }
 
 async function editarTransacaoNoBanco(id) {
@@ -368,15 +379,60 @@ function transformarValorEmValorSql(valor) {
     return valorSql
 }
 
-async function carregarValoresResumo() {
-    await carregarTransacoes()
+function carregarValoresResumo(receitas, despesas) {
     const saldoAtual = document.querySelector('.saldo-atual')
     const totalDespesasHtml = document.querySelector('.total-despesas')
     const totalReceitasHtml = document.querySelector('.total-receitas')
-    saldoAtual.innerHTML = `R$ ${totalDeReceitas - totalDeDespesas}`
-    
-    totalDespesasHtml.innerHTML = `R$ ${totalDeDespesas}`
-    totalReceitasHtml.innerHTML = `R$ ${totalDeReceitas}`
+    saldoAtual.innerHTML = `R$ ${receitas - despesas}`
+
+    totalDespesasHtml.innerHTML = `R$ ${despesas}`
+    totalReceitasHtml.innerHTML = `R$ ${receitas}`
 }
 
-carregarValoresResumo()
+carregarTransacoes()
+
+//verificacao dos campos
+
+const inputsFormsNewEdit = document.querySelectorAll('#new-transaction-form .form-field input, #new-transaction-form .form-field select, #edit-transaction-form .form-field input, #edit-transaction-form .form-field select')
+inputsFormsNewEdit.forEach((input) => {
+    input.addEventListener('focus', () => {
+        input.classList.add('input-focus')
+    })
+    input.addEventListener('blur', () => {
+        input.classList.remove('input-focus')
+    })
+})
+
+const inputsTextDescription = document.querySelectorAll('#description, #edit-description')
+inputsTextDescription.forEach((input) => {
+    input.addEventListener('input', () => {
+        const valor = input.value
+        if (valor !== null && valor.trim() !== '' && valor.length < 20) {
+            input.classList.add('valid-form-input')
+            input.classList.remove('invalid-form-input')
+        } else {
+            input.classList.remove('valid-form-input')
+            input.classList.add('invalid-form-input')
+        }
+    })
+})
+
+const inputsTextValues = document.querySelectorAll('#value, #edit-value')
+inputsTextValues.forEach((input) => {
+    input.addEventListener('input', () => {
+        const valor = input.value
+        input.value = valor.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        if (valor.trim() === '' || isNaN(valor)) {
+            if (valor.split(',').length - 1 === 1) {
+                input.classList.add('valid-form-input')
+                input.classList.remove('invalid-form-input')
+            } else {
+                input.classList.add('invalid-form-input')
+                input.classList.remove('valid-form-input')
+            }
+        } else {
+            input.classList.add('valid-form-input')
+            input.classList.remove('invalid-form-input')
+        }
+    })
+})

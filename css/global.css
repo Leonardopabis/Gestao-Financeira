@@ -9,6 +9,9 @@
     --text-secondary-color: #676767;
 
     --button-primary-color: rgb(198, 255, 198);
+    --input-focus-color: #90d5ff;
+    --input-valid-color: #1df300;
+    --input-invalid-color: #f32f00;
 }
 
 header {
@@ -76,6 +79,7 @@ input[type="text"], input[type="date"], select {
     border: 2px solid var(--background-terciary-color);
     border-radius: 5px;
     padding-left: 10px;
+    transition: border-color 0.3s ease-in-out;
 }
 
 .container {
