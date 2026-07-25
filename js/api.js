@@ -421,18 +421,19 @@ const inputsTextValues = document.querySelectorAll('#value, #edit-value')
 inputsTextValues.forEach((input) => {
     input.addEventListener('input', () => {
         const valor = input.value
-        input.value = valor.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        if (valor.trim() === '' || isNaN(valor)) {
-            if (valor.split(',').length - 1 === 1) {
-                input.classList.add('valid-form-input')
-                input.classList.remove('invalid-form-input')
-            } else {
-                input.classList.add('invalid-form-input')
-                input.classList.remove('valid-form-input')
-            }
-        } else {
+        input.value = valor.replace(/[^0-9,]/g, '');
+        
+        if (input.value.trim() !== '') {
             input.classList.add('valid-form-input')
             input.classList.remove('invalid-form-input')
+            if (input.value.split(',').length - 1 !== 1 && input.value.split(',').length - 1 !== 0) {
+                input.classList.add('invalid-form-input')
+                input.classList.remove('valid-form-input')
+            } 
+        }
+        else {
+            input.classList.add('invalid-form-input')
+            input.classList.remove('valid-form-input')
         }
     })
 })
