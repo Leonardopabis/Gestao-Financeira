@@ -437,3 +437,22 @@ inputsTextValues.forEach((input) => {
         }
     })
 })
+
+const inputsSelectCategories = document.querySelectorAll('#categories, #edit-categories')
+inputsSelectCategories.forEach((input) => {
+    input.addEventListener('change', () => {
+        if (input.value !== '') {
+            input.classList.add('valid-form-input')
+            input.classList.remove('invalid-form-input')
+        } else {
+            input.classList.add('invalid-form-input')
+            input.classList.remove('valid-form-input')
+        }
+    })
+    input.addEventListener('blur', () => {
+        if (input.value === '') {
+            input.classList.add('invalid-form-input')
+            input.classList.remove('valid-form-input')
+        }
+    })
+})
