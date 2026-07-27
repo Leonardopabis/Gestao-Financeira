@@ -400,6 +400,7 @@ inputsFormsNewEdit.forEach((input) => {
     })
     input.addEventListener('blur', () => {
         input.classList.remove('input-focus')
+        
     })
 })
 
@@ -413,6 +414,12 @@ inputsTextDescription.forEach((input) => {
         } else {
             input.classList.remove('valid-form-input')
             input.classList.add('invalid-form-input')
+        }
+    })
+    input.addEventListener('blur', () => {
+        if (input.value.trim() === '') {
+            input.classList.add('invalid-form-input')
+            input.classList.remove('valid-form-input')
         }
     })
 })
@@ -432,6 +439,12 @@ inputsTextValues.forEach((input) => {
             } 
         }
         else {
+            input.classList.add('invalid-form-input')
+            input.classList.remove('valid-form-input')
+        }
+    })
+    input.addEventListener('blur', () => {
+        if (input.value.trim() === '') {
             input.classList.add('invalid-form-input')
             input.classList.remove('valid-form-input')
         }
