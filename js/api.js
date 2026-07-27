@@ -502,3 +502,5 @@ inputsSelectCategories.forEach((input) => {
         }
     })
 })
+
+// Secao do filtro
