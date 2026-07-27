@@ -190,6 +190,11 @@ function fecharModalEdit() {
     editModal.close()
     document.body.classList.remove('modal-aberto')
     editModalContainer.classList.add('edit-modal-container')
+    const editFields = [editTransactionDescricao, editTransactionValor, editTransactionCategoria, editTransactionTipo, editTransactionData]
+    editFields.forEach((editField) => {
+        editField.classList.remove('valid-form-input')
+        editField.classList.remove('invalid-form-input')
+    })
 }
 
 const closeModal = document.querySelector('.fechar-delete-modal')
@@ -217,6 +222,14 @@ editModal.addEventListener('cancel', (event) => {
 
 const confirmEditModal = document.querySelector('.confirm-edit-button')
 confirmEditModal.addEventListener('click', async () => {
+    if (editTransactionDescricao.classList.contains('invalid-form-input')) {
+        alert('Digite uma descrição válida')
+        return
+    }
+    if (editTransactionValor.classList.contains('invalid-form-input')) {
+        alert('Digite um valor válido')
+        return
+    }
     if (!id) return
     await editarTransacaoNoBanco(id)
     fecharModalEdit()
@@ -238,8 +251,28 @@ formularioNovaTransacao.addEventListener('submit', async (event) => {
     event.preventDefault()
 
     const descricaoHtml = document.querySelector('#description').value
+    const inputDescricao = document.querySelector('#description')
+    if (!inputDescricao.classList.contains('valid-form-input')) {
+        alert('Descrição inválida')
+        return
+    }
+
     const valorHtml = document.querySelector('#value').value
+    const inputvalor = document.querySelector('#value')
+    if(!inputvalor.classList.contains('valid-form-input')){
+        alert('Valor inválido')
+        return
+    }
+
+
     const categoriaHtml = document.querySelector('#categories').value
+    const selectCategoria = document.querySelector('#categories')
+    if (!selectCategoria.classList.contains('valid-form-input')){
+        alert('Selecione uma categoria')
+        return
+    }
+
+
     const tipoSelecionado = document.querySelector('input[name="type"]:checked')
 
     let dataHtml = document.querySelector('#transaction-date').value
