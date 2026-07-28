@@ -84,7 +84,7 @@ async function carregarTransacoes() {
         }
 
         todasAsTransacoes = await resposta.json()
-        aplicarFiltros(todasAsTransacoes)
+        aplicarFiltros()
 
     } catch (erro) {
         console.error('Erro ao buscar dados', erro)
@@ -134,10 +134,10 @@ function verificarPeriodo(dataTransacao, periodoSelecionado) {
         )
     }
 
-    if (periodoSelecionado === 'this-month') {
+    if (periodoSelecionado === 'filter-this-month') {
         return (
             dataTransacao.getMonth() === dataHoje.getMonth() &&
-            dataTransacao.getFullYear === dataHoje.getFullYear()
+            dataTransacao.getFullYear() === dataHoje.getFullYear()
         )
     }
 
@@ -165,9 +165,9 @@ function verificarPeriodo(dataTransacao, periodoSelecionado) {
     return true
 }
 
-function aplicarFiltros(transacoes) {
+function aplicarFiltros() {
     const busca = document.querySelector('#search').value.trim().toLowerCase()
-    const categoriaSelecionada = document.querySelector('#filter-description').value.toLowerCase()
+    const categoriaSelecionada = document.querySelector('#filter-categories').value.toLowerCase()
     const tipoSelecionado = document.querySelector('#filter-types').value
     const periodoSelecionado = document.querySelector('#filter-period').value
 
@@ -211,6 +211,28 @@ function aplicarFiltros(transacoes) {
     renderizarTransacoes(transacoesFiltradas)
     atualizarResumo(transacoesFiltradas)
 }
+
+const filtroBusca = document.querySelector('#search')
+const filtroCategoria = document.querySelector('#filter-categories')
+const filtroTipo = document.querySelector('#filter-types')
+const filtroPeriodo = document.querySelector('#filter-period')
+const botaoLimparFiltros = document.querySelector('.filter-reset-button')
+
+filtroBusca.addEventListener('input', aplicarFiltros)
+filtroCategoria.addEventListener('change', aplicarFiltros)
+filtroTipo.addEventListener('change', aplicarFiltros)
+filtroPeriodo.addEventListener('change', aplicarFiltros)
+
+botaoLimparFiltros.addEventListener('click', (event) => {
+    event.preventDefault()
+
+    filtroBusca.value = ''
+    filtroCategoria.value = 'all'
+    filtroTipo.value = 'all'
+    filtroPeriodo.value = 'filter-this-month'
+
+    aplicarFiltros()
+})
 
 function renderizarTransacoes(transacoes) {
     const lista = document.querySelector('.transaction-list-body')
