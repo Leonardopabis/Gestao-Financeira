@@ -84,9 +84,7 @@ async function carregarTransacoes() {
         }
 
         todasAsTransacoes = await resposta.json()
-        todasAsTransacoes = aplicarFiltros(todasAsTransacoes)
-        renderizarTransacoes(todasAsTransacoes)
-        atualizarResumo(todasAsTransacoes)
+        aplicarFiltros(todasAsTransacoes)
 
     } catch (erro) {
         console.error('Erro ao buscar dados', erro)
@@ -168,8 +166,50 @@ function verificarPeriodo(dataTransacao, periodoSelecionado) {
 }
 
 function aplicarFiltros(transacoes) {
-    
-    return
+    const busca = document.querySelector('#search').value.trim().toLowerCase()
+    const categoriaSelecionada = document.querySelector('#filter-description').value.toLowerCase()
+    const tipoSelecionado = document.querySelector('#filter-types').value
+    const periodoSelecionado = document.querySelector('#filter-period').value
+
+    const transacoesFiltradas = todasAsTransacoes.filter((transacao) => {
+        const descricao = transacao.descricao.trim().toLowerCase()
+        const categoria = transacao.categoria.trim().toLowerCase()
+        const tipo = transacao.tipo.trim().toLowerCase()
+        const dataTransacao = transformarDataEmObjeto(transacao.data)
+
+        const correspondeBusca = 
+            busca === '' ||
+            descricao.includes(busca)
+            
+        const correspondeCategoria = 
+            categoriaSelecionada === 'all' ||
+            categoria === categoriaSelecionada
+
+        const correspondeTipo = 
+            tipoSelecionado === 'all' ||
+            (
+                tipoSelecionado === 'filter-income' &&
+                tipo === 'receita'
+            ) ||
+            (
+                tipoSelecionado === 'filter-outcome' &&
+                tipo === 'despesa'
+            )
+
+        const correspondePeriodo = verificarPeriodo(
+            dataTransacao, periodoSelecionado
+        )
+
+        return (
+            correspondeBusca &&
+            correspondeCategoria &&
+            correspondeTipo &&
+            correspondePeriodo
+        )
+    })
+
+    renderizarTransacoes(transacoesFiltradas)
+    atualizarResumo(transacoesFiltradas)
 }
 
 function renderizarTransacoes(transacoes) {
