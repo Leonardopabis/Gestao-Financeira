@@ -84,13 +84,92 @@ async function carregarTransacoes() {
         }
 
         todasAsTransacoes = await resposta.json()
-
+        todasAsTransacoes = aplicarFiltros(todasAsTransacoes)
         renderizarTransacoes(todasAsTransacoes)
         atualizarResumo(todasAsTransacoes)
 
     } catch (erro) {
         console.error('Erro ao buscar dados', erro)
     }
+}
+
+function transformarDataEmObjeto(dataISO) {
+    const [ano, mes, dia] = dataISO.split('T')[0].split('-').map(Number)
+    return new Date(ano, mes-1, dia)
+}
+
+function verificarPeriodo(dataTransacao, periodoSelecionado) {
+    const hoje = new Date()
+
+    const dataHoje = new Date(
+        hoje.getFullYear(),
+        hoje.getMonth(),
+        hoje.getDate()
+    )
+
+    if (periodoSelecionado === 'all') {
+        return true
+    }
+
+    if (periodoSelecionado === 'filter-today') {
+        return (
+            dataTransacao.getDate() === dataHoje.getDate() &&
+            dataTransacao.getMonth() === dataHoje.getMonth() &&
+            dataTransacao.getFullYear() === dataHoje.getFullYear()
+        )
+    }
+
+    if (periodoSelecionado === 'filter-this-week') {
+        const inicioSemana = new Date(dataHoje)
+
+        const diaDaSemana = dataHoje.getDay()
+        const diferenca = diaDaSemana === 0 ? -6 : 1 - diaDaSemana
+
+        inicioSemana.setDate(dataHoje.getDate() + diferenca)
+
+        const finalSemana = new Date(inicioSemana)
+        finalSemana.setDate(inicioSemana.getDate() + 7)
+
+        return (
+            dataTransacao >= inicioSemana &&
+            dataTransacao < finalSemana
+        )
+    }
+
+    if (periodoSelecionado === 'this-month') {
+        return (
+            dataTransacao.getMonth() === dataHoje.getMonth() &&
+            dataTransacao.getFullYear === dataHoje.getFullYear()
+        )
+    }
+
+    if (periodoSelecionado === 'filter-this-trimester') {
+        const tresMesesAtras = new Date(dataHoje)
+        tresMesesAtras.setMonth(dataHoje.getMonth() - 3)
+
+        return dataTransacao >= tresMesesAtras
+    }
+
+    if (periodoSelecionado === 'filter-this-semester') {
+        const seisMesesAtras = new Date(dataHoje)
+        seisMesesAtras.setMonth(dataHoje.getMonth() - 6)
+
+        return dataTransacao >= seisMesesAtras
+    }
+
+    if (periodoSelecionado === 'filter-this-year') {
+        const umAnoAtras = new Date(dataHoje)
+        umAnoAtras.setFullYear(dataHoje.getFullYear() - 1)
+
+        return dataTransacao >= umAnoAtras
+    }
+
+    return true
+}
+
+function aplicarFiltros(transacoes) {
+    
+    return
 }
 
 function renderizarTransacoes(transacoes) {
