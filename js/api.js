@@ -67,55 +67,76 @@ const criarItemHtml = (descricao, categoria, tipo, valor, data, receita, id) => 
 }
 
 // Carregar dados do sql na lista
-async function carregarTransacoes() {
-    let totalDeReceitas = 0
-    let totalDeDespesas = 0
-    let hoje = new Date().toISOString().split('T')[0]
-    let dataHtmlHoje = document.querySelector('#transaction-date').value = hoje
-    let dataHeader = document.querySelector('#data-header').value = hoje
+let todasAsTransacoes = []
 
+async function carregarTransacoes() {
 
     try {
+
+        let hoje = new Date().toISOString().split('T')[0]
+        document.querySelector('#transaction-date').value = hoje
+        document.querySelector('#data-header').value = hoje
+        
         const resposta = await fetch('http://localhost:3000/api/get-transactions')
 
         if (!resposta.ok) {
             throw new Error(`Erro http: ${resposta.status}`)
         }
 
-        const dados = await resposta.json()
+        todasAsTransacoes = await resposta.json()
 
-        const listaDeTransacoes = document.querySelector('.transaction-list-body')
-        listaDeTransacoes.innerHTML = null
-        dados.forEach(item => {
-            let isReceita = null
-            if (item.tipo.toLowerCase() === 'receita') {
-                isReceita = true
-                item.tipo = 'Receita'
-                totalDeReceitas += item.valor
-            } else {
-                isReceita = false
-                item.tipo = 'Despesa'
-                totalDeDespesas += item.valor
-            }
+        renderizarTransacoes(todasAsTransacoes)
+        atualizarResumo(todasAsTransacoes)
 
-            const formatoBrasileiro = new Intl.NumberFormat('pt-br', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-            const valorFormatado = formatoBrasileiro.format(item.valor)
-
-            const novaTransacao = criarItemHtml(item.descricao, item.categoria, item.tipo, valorFormatado, item.data, isReceita, item.id)
-            listaDeTransacoes.insertAdjacentHTML('afterbegin', novaTransacao)
-
-            let hoje = new Date().toISOString().split('T')[0]
-            let dataHtmlHoje = document.querySelector('#transaction-date').value = hoje
-            let dataHeader = document.querySelector('#data-header').value = hoje
-
-            carregarValoresResumo(totalDeReceitas, totalDeDespesas)
-
-        });
-        await configurarBotoesDeleteEEdit()
     } catch (erro) {
         console.error('Erro ao buscar dados', erro)
     }
 }
+
+function renderizarTransacoes(transacoes) {
+    const lista = document.querySelector('.transaction-list-body')
+
+    lista.innerHTML = ''
+
+    transacoes.forEach((item) => {
+        const isReceita = item.tipo.toLowerCase() === 'receita'
+        const tipoFormatado = isReceita ? 'Receita' : 'Despesa'
+
+        const formatoBrasileiro = new Intl.NumberFormat('pt-br', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+
+        const valorFormatado = formatoBrasileiro.format(item.valor)
+
+        const novaTransacao = criarItemHtml(
+            item.descricao,
+            item.categoria,
+            tipoFormatado,
+            valorFormatado,
+            item.data,
+            isReceita,
+            item.id
+        )
+
+        lista.insertAdjacentHTML('afterbegin', novaTransacao)
+    })
+
+    configurarBotoesDeleteEEdit()
+}
+
+function atualizarResumo(transacoes) {
+    let totalReceitas = 0
+    let totalDespesas = 0
+
+    transacoes.forEach((item) => {
+        if (item.tipo.toLowerCase() === 'receita'){
+            totalReceitas += Number(item.valor)
+        } else {
+            totalDespesas += Number(item.valor)
+        }
+    })
+
+    carregarValoresResumo(totalReceitas, totalDespesas)
+}
+
 
 const modal = document.querySelector('.delete-modal')
 const modalContainer = document.querySelector('.delete-modal-container')
