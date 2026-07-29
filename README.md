@@ -68,6 +68,7 @@ MySQL
 
 <!-- Adicione aqui uma imagem ou GIF do projeto -->
 <img width="959" height="413" alt="image" src="https://github.com/user-attachments/assets/f516668e-d2d4-485c-b098-8fb32e7b2f49" />
+
 - Só é possível cadastrar uma transação com todos os campos validados
 - Após cadastradas, as transações são puxadas do banco e mostradas na tabela das transações
 - Os filtros selecionam especificamente as transações
